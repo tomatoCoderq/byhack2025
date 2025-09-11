@@ -1,0 +1,41 @@
+[project]
+name = "byhack2025"
+version = "0.1.0"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "alembic>=1.16.4",
+    "asyncpg>=0.30.0",
+    "colorlog>=6.9.0",
+    "fastapi-swagger>=0.3.27",
+    "fastapi[standard]>=0.112",
+    "gunicorn>=23.0.0",
+    "sqlalchemy>=2.0.41",
+    "sqlmodel>=0.0.24",
+]
+
+[dependency-groups]
+dev = [
+    "pre-commit>=4.2.0",
+    "pytest>=8.4.0",
+    "pytest-async-sqlalchemy>=0.2.0",
+    "pytest-asyncio>=1.1.0",
+    "pytest-cov>=6.2.1",
+]
+
+[tool.ruff]
+line-length = 120
+lint.ignore = [
+    # wildcard imports are fine
+    "F403",
+    "F405",
+    "PLR",
+]
+lint.extend-select = ["I", "UP", "PL"]
+lint.extend-ignore = ["PLC0415"]
+target-version = "py313"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "session"
+asyncio_default_test_loop_scope = "session"
