@@ -70,6 +70,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Add a simple health check endpoint
+@app.get("/health", tags=["Health"])
+async def health_check():
+    """Health check endpoint to verify the API is running."""
+    return {"status": "healthy", "message": "BYHack2025 API is running!"}
+
 # Import routers above and include them below [do not edit this comment]
 # Example router imports:
 # from src.modules.users.routes import router as router_users
