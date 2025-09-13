@@ -1,0 +1,19 @@
+meta {
+  name: get story session
+  type: http
+  seq: 8
+}
+
+get {
+  url: http://localhost:8000/stories/:session_id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  session_id: 
+}
+
+settings {
+  encodeUrl: true
+}
