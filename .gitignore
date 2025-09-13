@@ -5,3 +5,4 @@ frontend/node_modules
 backend/.env
 backend/settings.yaml
 .ruff_cache
+/GPT/.env
