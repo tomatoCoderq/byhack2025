@@ -3,8 +3,7 @@ from __future__ import annotations
 from typing import List
 from uuid import UUID
 
-from fastapi import APIRouter, HTTPException, Body
-from pydantic import BaseModel
+from fastapi import APIRouter, HTTPException
 from sqlmodel import SQLModel
 
 # from src.modules.characters.schemas import CharacterCreateIn, CharacterOut

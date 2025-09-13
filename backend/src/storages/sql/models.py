@@ -1,22 +1,26 @@
 from __future__ import annotations
 
+from enum import StrEnum
 import uuid
 from datetime import datetime
-from typing import List, Optional
+from typing import Optional
 from pydantic import ConfigDict
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 
 
-from sqlmodel import Field, Relationship, SQLModel
+from sqlmodel import Field, SQLModel
 
-from src.storages.sql.enums import StorySessionStatus
+# from src.storages.sql.enums import StorySessionStatus
 from sqlmodel._compat import SQLModelConfig
 from typing import cast
 
 def utcnow() -> datetime:
     return datetime.utcnow()
+
+class StorySessionStatus(StrEnum):
+    active = "active"
+    completed = "completed"
+    cancelled = "cancelled"
 
 class Base(SQLModel):
     model_config = cast(SQLModelConfig, ConfigDict(json_schema_serialization_defaults_required=True))
@@ -48,14 +52,14 @@ class Character(Base, table=True):
     # )
 
 
-# class StorySession(Base, table=True):
-#     __tablename__ = "story_sessions"  # type: ignore
+class StorySession(Base, table=True):
+    __tablename__ = "story_sessions"  # type: ignore
 
-#     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
-#     user_id: uuid.UUID
-#     character_id: uuid.UUID = Field(foreign_key="characters.id")
-#     created_at: datetime = Field(default_factory=utcnow)
-#     status: StorySessionStatus = Field(default=StorySessionStatus.ACTIVE)
+    id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
+    user_id: uuid.UUID
+    character_id: uuid.UUID = Field(foreign_key="characters.id")
+    created_at: datetime = Field(default_factory=utcnow)
+    status: StorySessionStatus = Field(default=StorySessionStatus.active)
 
 #     # Relations
 #     character: Optional["Character"] = Relationship(
