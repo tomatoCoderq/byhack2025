@@ -46,4 +46,3 @@ export default function Dialogue({ item, lang = 'ru', t, onBack }) {
     </div>
   )
 }
-

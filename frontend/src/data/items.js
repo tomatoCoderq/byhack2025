@@ -1,7 +1,6 @@
 export const items = [
   {
     id: '1',
-    key: 'su_anasy',
     title: { ru: 'Су анасы', tt: 'Су анасы' },
     image: '/su_anasy.png',
     details: {
@@ -62,4 +61,6 @@ export const items = [
     },
   },
 ]
+
+
 
