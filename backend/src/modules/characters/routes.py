@@ -30,7 +30,6 @@ class CharacterCreateIn(SQLModel):
 @router.get("", response_model=List[CharacterOut])
 async def list_characters(session: DbSessionDep) -> List[CharacterOut]:
     characters = await repo.list_characters(session)
-    print("getet", characters)
     return [CharacterOut.model_validate(c, from_attributes=True) for c in characters]
 
 

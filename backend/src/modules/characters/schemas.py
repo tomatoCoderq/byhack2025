@@ -1,4 +1,4 @@
-from sqlalchemy import UUID
+from uuid import UUID
 from sqlmodel import SQLModel
 
 class CharacterOut(SQLModel):
