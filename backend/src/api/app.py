@@ -1,9 +1,20 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from src.config import settings
 from src.modules.users.routes import router as users_router
 from src.modules.characters.routes import router as characters_router
 from src.modules.stories.routes import router as stories_router
 
 app = FastAPI(title="Backend API")
+
+# CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origin_regex=settings.cors_allow_origin_regex,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.get("/", tags=["system"])

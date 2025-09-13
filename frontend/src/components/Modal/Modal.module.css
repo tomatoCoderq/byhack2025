@@ -15,6 +15,23 @@
     font-weight: 400;
     margin-left: 10px;
 }
-.button_play{
+
+.info-item{
     margin-top: 30px;
+}
+
+.info-item:first-child{
+    margin-top: 0;
+}
+
+/* Center play button in the right column */
+.button_play{
+  align-self: center;
+  margin-top: 30px;
+}
+
+@media (max-width: 600px) {
+  .modal__title { font-size: 24px; }
+  .info-label { font-size: 18px; }
+  .info-text { font-size: 16px; }
 }

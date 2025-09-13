@@ -1,5 +1,5 @@
 export const dialogues = {
-  su_anasy: {
+  1: {
     start: 'n1',
     nodes: {
       n1: {

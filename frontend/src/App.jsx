@@ -68,7 +68,16 @@ export default function App() {
 
   return (
     <div className="app">
-      <Header lang={lang} t={i18n[lang]} onToggleLang={toggleLang} userName={userName} onGoCharacters={goHome} onGoAbout={goAbout} />
+      {view !== 'dialog' && (
+        <Header
+          lang={lang}
+          t={i18n[lang]}
+          onToggleLang={toggleLang}
+          userName={userName}
+          onGoCharacters={goHome}
+          onGoAbout={goAbout}
+        />
+      )}
 
       {view === 'home' && (
         <main className="container">

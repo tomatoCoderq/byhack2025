@@ -4,7 +4,7 @@ import styles from './Header.module.css'
 
 export default function Header({ lang = 'ru', t, onToggleLang, userName, onGoCharacters, onGoAbout }) {
   const flagSrc = lang === 'ru' ? '/russia.png' : '/tatarstan.png'
-  const aria = lang === 'ru' ? 'Переключить на татарский' : 'Переключить на русский'
+  const aria = lang === 'ru' ? 'Переключить язык' : 'Телне алыштыру'
   return (
     <header className="header">
       <div className="header__inner">
@@ -12,9 +12,9 @@ export default function Header({ lang = 'ru', t, onToggleLang, userName, onGoCha
           <div className="header__user" title={userName}>{userName}</div>
         )}
         <div className="header__top">
-          <Button side="left" onClick={onGoCharacters}>{t?.button1 || 'ПЕРСОНАЖИ'}</Button>
+          <Button className="header__btn" side="left" onClick={onGoCharacters}>{t?.button1 || 'Каталог'}</Button>
           <h1 className={styles.title_header}>SHURAY</h1>
-          <Button side="right" onClick={onGoAbout}>{t?.button2 || 'О ПРОЕКТЕ'}</Button>
+          <Button className="header__btn" side="right" onClick={onGoAbout}>{t?.button2 || 'О проекте'}</Button>
         </div>
         <button
           className="lang-toggle"
