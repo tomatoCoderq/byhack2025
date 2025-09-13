@@ -1,0 +1,18 @@
+# Example configuration file for the ByHack2025 API
+# Copy this file to settings.yaml and fill in your values
+
+# Database connection URL (required)
+# For local development with docker-compose:
+db_url: "postgresql+asyncpg://postgres:postgres@localhost:5432/postgres"
+
+# OpenAI API key for story generation (required)
+# Get your key from https://platform.openai.com/
+openai_api_key: "your_openai_api_key_here"
+
+# CORS settings - regex pattern for allowed origins
+# For development, you can use ".*" to allow all origins
+# For production, specify your domain: "https://your-domain.com"
+cors_allow_origin_regex: ".*"
+
+# Optional: API root path prefix
+# app_root_path: "/api/v1"
