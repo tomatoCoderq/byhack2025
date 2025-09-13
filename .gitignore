@@ -2,3 +2,6 @@ backend/.venv
 
 .vscode
 __pycache__/
+backend/.env
+backend/settings.yaml
+.ruff_cache
