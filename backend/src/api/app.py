@@ -1,4 +1,6 @@
 from fastapi import FastAPI
+from src.modules.users.routes import router as users_router
+from src.modules.characters.routes import router as characters_router
 
 app = FastAPI(title="Backend API")
 
@@ -11,3 +13,7 @@ def root():
 @app.get("/health", tags=["system"])
 def health():
     return {"status": "ok"}
+
+# Routers
+app.include_router(users_router)
+app.include_router(characters_router)
