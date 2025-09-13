@@ -24,3 +24,30 @@ class StorySessionOut(BaseModel):
     created_at: datetime
     status: StorySessionStatus
 
+
+class GenerateDialogueIn(BaseModel):
+    style: str | None = Field(None, description="Стиль повествования")
+    persona: str | None = Field(None, description="Характер и личность NPC")
+    context: str = Field("", description="Контекст сцены/ситуации")
+
+
+class GenerateEndingIn(BaseModel):
+    style: str | None = Field(None, description="Стиль повествования")
+    persona: str | None = Field(None, description="Характер и личность NPC")
+    start_ru: str = Field("", description="Начало сцены (рус)")
+    start_tt: str = Field("", description="Начало сцены (тат)")
+    visited_summary_ru: list[str] = Field([""], description="Перечень пройденных блоков (рус)")
+    visited_summary_tt: list[str] = Field([""], description="Перечень пройденных блоков (тат)")
+
+
+class GenerateStoryAndDialogueIn(BaseModel):
+    user_id: UUID = Field(..., description="ID пользователя")
+    style: str | None = Field(None, description="Стиль повествования")
+    persona: str | None = Field(None, description="Характер и личность NPC")
+    persona_name: str | None = Field(None, description="Имя персонажа")
+    context: str = Field("", description="Контекст сцены/ситуации")
+
+
+class StoryWithDialogueOut(BaseModel):
+    session: StorySessionOut
+    dialogue: dict = Field(..., description="Сгенерированный узел диалога (MultiBranchDialogue)")
