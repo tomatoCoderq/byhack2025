@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { items } from './data/items'
+import { fetchItems } from './api/client'
 import Header from './components/Header/Header'
 import Card from './components/Card/Card'
 import Modal from './components/Modal/Modal'
@@ -15,6 +15,9 @@ export default function App() {
   const [active, setActive] = useState(null)
   const [userName, setUserName] = useState(null)
   const [needName, setNeedName] = useState(false)
+  const [items, setItems] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
 
   useEffect(() => {
     if (selected) {
@@ -28,6 +31,20 @@ export default function App() {
   useEffect(() => {
     document.documentElement.lang = lang
   }, [lang])
+
+  useEffect(() => {
+    let cancelled = false
+    setLoading(true)
+    setError(null)
+    fetchItems()
+      .then((list) => {
+        if (!cancelled) { setItems(list); setLoading(false) }
+      })
+      .catch((e) => {
+        if (!cancelled) { setError(e?.message || 'Load error'); setLoading(false) }
+      })
+    return () => { cancelled = true }
+  }, [])
 
   useEffect(() => {
     try {
@@ -81,11 +98,15 @@ export default function App() {
 
       {view === 'home' && (
         <main className="container">
-          <div className="grid">
-            {items.map((item) => (
-              <Card key={item.id} item={item} lang={lang} t={i18n[lang]} onClick={() => onCardClick(item)} />
-            ))}
-          </div>
+          {loading && <p style={{ color: '#05624E' }}>Загрузка…</p>}
+          {error && <p style={{ color: 'crimson' }}>Ошибка: {error}</p>}
+          {!loading && !error && (
+            <div className="grid">
+              {items.map((item) => (
+                <Card key={item.id} item={item} lang={lang} t={i18n[lang]} onClick={() => onCardClick(item)} />
+              ))}
+            </div>
+          )}
         </main>
       )}
 
@@ -115,4 +136,3 @@ export default function App() {
     </div>
   )
 }
-
