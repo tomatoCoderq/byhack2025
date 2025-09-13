@@ -4,11 +4,12 @@ from enum import StrEnum
 import uuid
 from datetime import datetime
 from typing import Optional
-from pydantic import ConfigDict
+from pydantic import BaseModel, ConfigDict
 
 
 
 from sqlmodel import Field, SQLModel
+from sqlalchemy import Column, JSON
 
 # from src.storages.sql.enums import StorySessionStatus
 from sqlmodel._compat import SQLModelConfig
@@ -33,23 +34,27 @@ class User(Base, table=True):
     name: str = Field(index=True, max_length=255)
 
 
+class LocalizedText(BaseModel):
+    ru: str
+    tt: str
+
+
+class CharacterDetails(BaseModel):
+    history: LocalizedText
+    habitat: LocalizedText
+    features: LocalizedText
+
+
 class Character(Base, table=True):
     __tablename__ = "characters"  # type: ignore
 
     # UUID primary key
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
 
-    name: str = Field(index=True, max_length=255)
-    description: Optional[str] = Field(default=None)
-    avatar_url: Optional[str] = Field(default=None, max_length=2048)
-
-    # Relations
-    # story_sessions: Mapped[List['StorySession']] = relationship(
-    #     back_populates="character",
-    #     sa_relationship_kwargs={
-    #         "cascade": "all, delete-orphan"
-    #     },
-    # )
+    # New structure fields
+    title: LocalizedText = Field(sa_column=Column(JSON, nullable=False))
+    image: Optional[str] = Field(default=None, max_length=2048)
+    details: CharacterDetails = Field(sa_column=Column(JSON, nullable=False))
 
 
 class StorySession(Base, table=True):

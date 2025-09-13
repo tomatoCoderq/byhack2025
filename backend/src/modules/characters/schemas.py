@@ -1,16 +1,29 @@
+from __future__ import annotations
+
 from uuid import UUID
-from sqlmodel import SQLModel
+from pydantic import BaseModel, Field
 
-class CharacterOut(SQLModel):
+
+class LocalizedText(BaseModel):
+    ru: str
+    tt: str
+
+
+class CharacterDetails(BaseModel):
+    history: LocalizedText
+    habitat: LocalizedText
+    features: LocalizedText
+
+
+class CharacterOut(BaseModel):
     id: UUID
-    name: str
-    description: str | None = None
-    avatar_url: str | None = None
+    title: LocalizedText
+    image: str | None = Field(default=None)
+    details: CharacterDetails
 
 
-class CharacterCreateIn(SQLModel):
-    name: str
-    description: str | None = None
-    avatar_url: str | None = None
-    
+class CharacterCreateIn(BaseModel):
+    title: LocalizedText
+    image: str | None = Field(default=None)
+    details: CharacterDetails
 
