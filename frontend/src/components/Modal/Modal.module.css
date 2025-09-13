@@ -1,0 +1,20 @@
+.modal__title{
+    font-size: 35px;
+    color: #05624E;
+    font-weight: 800;
+}
+.info-label{
+  color: #05624E;
+  font-size: 25px;
+  font-weight: 700;
+}
+
+.info-text{
+    color: #000;
+    font-size: 25px;
+    font-weight: 400;
+    margin-left: 10px;
+}
+.button_play{
+    margin-top: 30px;
+}
