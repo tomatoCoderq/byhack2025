@@ -31,9 +31,11 @@ export default function Dialogue({ item, lang = 'ru', t, onBack }) {
           </div>
           <div className="dialog__choices">
             {options.slice(0,4).map(opt => (
-              <Button key={opt.id} onClick={() => setNodeId(opt.next)}>{opt.label?.[lang] || ''}</Button>
+              <Button key={opt.id} fullWidth onClick={() => setNodeId(opt.next)}>{opt.label?.[lang] || ''}</Button>
             ))}
-            <Button side="right" onClick={onBack}>{t?.back || 'Назад'}</Button>
+            <div className="dialog__back">
+              <Button onClick={onBack}>{t?.back || 'Назад'}</Button>
+            </div>
           </div>
         </div>
       </div>

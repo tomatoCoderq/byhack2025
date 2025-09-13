@@ -170,6 +170,7 @@ body {
   flex-direction: column;
   align-items: center;
   flex: 1;
+  margin-left: 15px;
   min-height: 0; /* enables flex child scrolling */
 }
 
@@ -198,14 +199,15 @@ body {
 }
 
 /* Dialogue screen */
-.dialog { max-width: 900px; margin: 32px auto; padding: 0 16px; }
+.dialog { max-width: 1500px; margin: 32px auto; padding: 0 16px; }
 .dialog__frame { background: var(--panel); border: 1px solid var(--border); border-radius: 18px; overflow: hidden; }
 .dialog__image { width: 100%; display: block; object-fit: cover; aspect-ratio: 4/3; }
 .dialog__box { background: #F5DE9C; padding: 16px; border-top: 1px solid var(--border); }
 .dialog__line { margin-bottom: 16px; }
-.dialog__speaker { color: #05624E; font-weight: 800; text-transform: uppercase; }
-.dialog__text { color: #0b0e14; }
-.dialog__choices { display: flex; gap: 16px; flex-wrap: wrap; }
+.dialog__speaker { color: #05624E; font-weight: 700; text-transform: uppercase; font-size: 25px;}
+.dialog__text { color: #0b0e14; font-size: 25px; font-weight: 400;}
+.dialog__choices { display: flex; flex-direction: column; gap: 12px; }
+.dialog__back { margin-top: 6px; align-self: flex-end; }
 
 /* Auth name modal */
 .auth { width: 700px; background: var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 20px; }
@@ -213,3 +215,7 @@ body {
 .auth__form { display: flex; flex-direction: column; gap: 12px; }
 .auth__input { font-size:20px; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border); background: white; color: #05624E; }
 .auth__actions { display: flex; gap: 12px; justify-content: space-between; }
+.about.container h2, p{
+  color: #05624E;
+  font-size: 35px;
+}

@@ -6,13 +6,14 @@ export default function Button({
   type = 'button',
   side,
   color = '#0b6a52',
+  fullWidth = false,
   className,
   ...rest
 }) {
   const wantsLeft = typeof className === 'string' && className.split(/\s+/).includes('button_left')
   const wantsRight = typeof className === 'string' && className.split(/\s+/).includes('button_right')
   const sideClass = side === 'right' || wantsRight ? styles.button_right : (side === 'left' || wantsLeft ? styles.button_left : '')
-  const cls = [styles.button, sideClass, className]
+  const cls = [styles.button, sideClass, fullWidth ? styles.button_block : '', className]
     .filter(Boolean)
     .join(' ')
 

@@ -13,7 +13,7 @@ export default function Header({ lang = 'ru', t, onToggleLang, userName, onGoCha
         )}
         <div className="header__top">
           <Button side="left" onClick={onGoCharacters}>{t?.button1 || 'ПЕРСОНАЖИ'}</Button>
-          <h1 className={styles.title_header}>ШУРАЙ</h1>
+          <h1 className={styles.title_header}>SHURAY</h1>
           <Button side="right" onClick={onGoAbout}>{t?.button2 || 'О ПРОЕКТЕ'}</Button>
         </div>
         <button
