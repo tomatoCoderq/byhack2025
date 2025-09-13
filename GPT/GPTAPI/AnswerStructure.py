@@ -30,3 +30,5 @@ class EndingResult(BaseModel):
     npc_phrase_tt: str
     final_text_ru: str
     final_text_tt: str
+    story_ru: str
+    story_tt: str
