@@ -1,0 +1,15 @@
+meta {
+  name: create story
+  type: http
+  seq: 10
+}
+
+post {
+  url: http://localhost:8000/stories/generate/dialogue
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}

@@ -4,6 +4,7 @@ from typing import Optional
 from uuid import UUID
 
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import text
 from sqlmodel import select
 
 from src.storages.sql.models import Character
@@ -21,16 +22,37 @@ async def get_character(session: AsyncSession, character_id: UUID) -> Optional[C
 async def create_character(
     session: AsyncSession,
     *,
-    name: str,
-    description: str | None = None,
-    avatar_url: str | None = None,
+    title: dict,
+    image: str | None,
+    details: dict,
 ):
-    """Create a new character and persist it.
-
-    Note: added for future use (seeding/admin flows).
-    """
-    character = Character(name=name, description=description, avatar_url=avatar_url)
+    """Create a new character with nested fields and persist it."""
+    character = Character(title=title, image=image, details=details) # type: ignore
     session.add(character)
     await session.commit()
     await session.refresh(character)
     return character
+
+
+async def get_any_character_id(session: AsyncSession) -> UUID | None:
+    """Return the id of any existing character or None if table is empty."""
+    result = await session.execute(select(Character.id).limit(1))
+    return result.scalars().first()
+
+
+async def get_character_id_by_name(session: AsyncSession, name: str) -> UUID | None:
+    """Return character id by its localized title (ru/tt) or None if not found.
+
+    Note: Uses PostgreSQL JSON operator ->> to compare string values.
+    """
+    res = await session.execute(
+        text("""
+            SELECT id
+            FROM characters
+            WHERE title->>'ru' = :name OR title->>'tt' = :name
+            LIMIT 1
+        """),
+        {"name": name},
+    )
+    row = res.first()
+    return row[0] if row else None

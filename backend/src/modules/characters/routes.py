@@ -4,27 +4,13 @@ from typing import List
 from uuid import UUID
 
 from fastapi import APIRouter, HTTPException
-from sqlmodel import SQLModel
 
-# from src.modules.characters.schemas import CharacterCreateIn, CharacterOut
 from src.modules.characters import repository as repo
+from src.modules.characters.schemas import CharacterCreateIn, CharacterOut
 from src.storages.sql.dependencies import DbSessionDep
 
 
 router = APIRouter(prefix="/characters", tags=["characters"])
-
-
-class CharacterOut(SQLModel):
-    id: UUID
-    name: str
-    description: str | None = None
-    avatar_url: str | None = None
-
-
-class CharacterCreateIn(SQLModel):
-    name: str
-    description: str | None = None
-    avatar_url: str | None = None
 
 
 @router.get("", response_model=List[CharacterOut])
@@ -47,9 +33,8 @@ async def get_character(character_id: UUID, session: DbSessionDep) -> CharacterO
     status_code=201,
     summary="Create character (future use)",
     description=(
-        "Creates a new character. This endpoint is intended for future use,\n"
-        "such as admin tooling or initial seeding; it is not required for the\n"
-        "current user flow."
+        "Создает персонажа с локализованным названием и деталями (JSON).\n"
+        "Предназначено для будущего (админ/сидинг), не обязательно в текущем потоке."
     ),
 )
 async def create_character(
@@ -58,8 +43,8 @@ async def create_character(
 ) -> CharacterOut:
     character = await repo.create_character(
         session,
-        name=data.name,
-        description=data.description,
-        avatar_url=data.avatar_url,
+        title=data.title.model_dump(),
+        image=data.image,
+        details=data.details.model_dump(),
     )
     return CharacterOut.model_validate(character, from_attributes=True)

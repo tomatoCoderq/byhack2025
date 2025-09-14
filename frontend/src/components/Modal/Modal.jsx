@@ -31,15 +31,15 @@ export default function Modal({ item, lang = 'ru', t, onClose, onPlay }) {
           </div>
           <div className="modal__body" role="region" aria-label="Текстовое описание с прокруткой">
             <div className="info-list">
-              <div className="info-item">
+              <div className={styles["info-item"]}>
                 <span className={styles['info-label']}>{t?.historyLabel || 'ИСТОРИЯ'}:</span>
                 <span className={styles['info-text']}>{item.details?.history?.[lang] || item.description?.[lang] || ''}</span>
               </div>
-              <div className="info-item">
+              <div className={styles["info-item"]}>
                 <span className={styles['info-label']}>{t?.habitatLabel || 'МЕСТО ОБИТАНИЯ'}:</span>
                 <span className={styles['info-text']}>{item.details?.habitat?.[lang] || '...'}</span>
               </div>
-              <div className="info-item">
+              <div className={styles["info-item"]}>
                 <span className={styles['info-label']}>{t?.featuresLabel || 'ОСОБЕННОСТИ'}:</span>
                 <span className={styles['info-text']}>{item.details?.features?.[lang] || '...'}</span>
               </div>

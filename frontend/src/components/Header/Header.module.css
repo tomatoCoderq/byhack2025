@@ -3,3 +3,9 @@
     font-size: 40px;
     font-weight: 700;
 }
+
+@media (max-width: 600px) {
+  .title_header{
+    font-size: 26px;
+  }
+}
