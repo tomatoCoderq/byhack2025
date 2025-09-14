@@ -115,7 +115,7 @@ export default function App() {
 
       nodes[endId] = {
         speaker,
-        text: { ru: 'Конец', tt: 'Тәмам' },
+        text: { ru: '', tt: '' },
         options: [],
       }
 
@@ -155,16 +155,14 @@ export default function App() {
 
   return (
     <div className="app">
-      {view !== 'dialog' && (
-        <Header
-          lang={lang}
-          t={i18n[lang]}
-          onToggleLang={toggleLang}
-          userName={userName}
-          onGoCharacters={goHome}
-          onGoAbout={goAbout}
-        />
-      )}
+      <Header
+        lang={lang}
+        t={i18n[lang]}
+        onToggleLang={toggleLang}
+        userName={userName}
+        onGoCharacters={goHome}
+        onGoAbout={goAbout}
+      />
 
       {view === 'home' && (
         <main className="container">

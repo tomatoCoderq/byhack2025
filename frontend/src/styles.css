@@ -214,6 +214,7 @@ body {
 .dialog__line { margin-bottom: 16px; }
 .dialog__speaker { color: #05624E; font-weight: 700; text-transform: uppercase; font-size: 25px;}
 .dialog__text { color: #0b0e14; font-size: 25px; font-weight: 400;}
+.dialog__ending-text { color: #000000; font-size: 22px; line-height: 1.6; }
 .dialog__choices {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));

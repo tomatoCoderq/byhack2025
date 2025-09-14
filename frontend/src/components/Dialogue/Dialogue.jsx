@@ -83,10 +83,12 @@ export default function Dialogue({ item, lang = 'ru', t, onBack }) {
       <div className="dialog__frame">
         <img className="dialog__image" src={item.image} alt={item.title?.[lang] || ''} />
         <div className="dialog__box">
-          <div className="dialog__line">
-            <span className="dialog__speaker">{node?.speaker?.[lang] || item.title?.[lang] || ''}:</span>
-            <span className="dialog__text"> {node?.text?.[lang] || ''}</span>
-          </div>
+          {nodeId !== 'end' && (
+            <div className="dialog__line">
+              <span className="dialog__speaker">{node?.speaker?.[lang] || item.title?.[lang] || ''}:</span>
+              <span className="dialog__text"> {node?.text?.[lang] || ''}</span>
+            </div>
+          )}
           <div className="dialog__choices">
             {options.slice(0,4).map((opt) => (
               <Button key={opt.id} fullWidth onClick={() => setNodeId(opt.next)}>
@@ -109,7 +111,7 @@ export default function Dialogue({ item, lang = 'ru', t, onBack }) {
                       <span className="dialog__speaker">{item.title?.[lang] || ''}:</span>
                       <span className="dialog__text"> {ending?.[`npc_phrase_${lang}`] || ''}</span>
                     </div>
-                    <div style={{ whiteSpace: 'pre-wrap' }}>
+                    <div className="dialog__ending-text" style={{ whiteSpace: 'pre-wrap' }}>
                       {ending?.[`final_text_${lang}`] || ''}
                     </div>
                   </div>
@@ -125,4 +127,3 @@ export default function Dialogue({ item, lang = 'ru', t, onBack }) {
     </div>
   )
 }
-
