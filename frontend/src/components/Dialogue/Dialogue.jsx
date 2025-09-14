@@ -79,6 +79,8 @@ export default function Dialogue({ item, lang = 'ru', t, onBack }) {
   const options = node?.options || []
 
   return (
+    <>
+    {!endingLoading && (
     <div className="dialog">
       <div className="dialog__frame">
         <img className="dialog__image" src={item.image} alt={item.title?.[lang] || ''} />
@@ -125,5 +127,19 @@ export default function Dialogue({ item, lang = 'ru', t, onBack }) {
         </div>
       </div>
     </div>
+    )}
+    {endingLoading && (
+      <div className="overlay" role="status" aria-live="polite" aria-busy="true">
+        <div className="wait">
+          <div className="wait__spinner" />
+          <div className="wait__text">
+            {lang === 'tt'
+              ? 'Зинһар, көтегез — финал тудырыла…'
+              : 'Пожалуйста, подождите — генерируется финал истории…'}
+          </div>
+        </div>
+      </div>
+      )}
+    </>
   )
 }

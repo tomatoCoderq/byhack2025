@@ -19,6 +19,7 @@ export default function App() {
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [storyLoading, setStoryLoading] = useState(false)
 
   useEffect(() => {
     if (selected) {
@@ -66,6 +67,7 @@ export default function App() {
     }
 
     try {
+      setStoryLoading(true)
       const personaName = item?.title?.ru || item?.title?.tt || ''
       const resp = await createStoryAndDialogue({ userId, personaName, context: '' })
       const d = resp?.dialogue || {}
@@ -128,6 +130,8 @@ export default function App() {
     } catch (e) {
       console.error(e)
       alert('Не удалось начать историю: ' + (e?.message || 'ошибка'))
+    } finally {
+      setStoryLoading(false)
     }
   }
   const backHome = () => {
@@ -200,6 +204,19 @@ export default function App() {
 
       {needName && (
         <AuthName onCancel={() => setNeedName(false)} onSubmit={saveName} lang={lang} t={i18n[lang]} />
+      )}
+
+      {storyLoading && (
+        <div className="overlay" role="status" aria-live="polite" aria-busy="true">
+          <div className="wait">
+            <div className="wait__spinner" />
+            <div className="wait__text">
+              {lang === 'tt'
+                ? 'Зинһар, көтегез — хикәя тудырыла…'
+                : 'Пожалуйста, подождите — идёт генерация истории…'}
+            </div>
+          </div>
+        </div>
       )}
     </div>
   )
