@@ -159,14 +159,16 @@ export default function App() {
 
   return (
     <div className="app">
-      <Header
-        lang={lang}
-        t={i18n[lang]}
-        onToggleLang={toggleLang}
-        userName={userName}
-        onGoCharacters={goHome}
-        onGoAbout={goAbout}
-      />
+      {view !== 'dialog' && (
+        <Header
+          lang={lang}
+          t={i18n[lang]}
+          onToggleLang={toggleLang}
+          userName={userName}
+          onGoCharacters={goHome}
+          onGoAbout={goAbout}
+        />
+      )}
 
       {view === 'home' && (
         <main className="container">
@@ -184,7 +186,7 @@ export default function App() {
 
       {view === 'dialog' && active && (
         <main className="container">
-          <Dialogue item={active} lang={lang} t={i18n[lang]} onBack={backHome} />
+          <Dialogue item={active} lang={lang} t={i18n[lang]} onBack={backHome} onToggleLang={toggleLang} />
         </main>
       )}
 

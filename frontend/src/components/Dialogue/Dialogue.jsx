@@ -3,7 +3,7 @@ import { dialogues } from '../../data/dialogues'
 import Button from '../Button/Button'
 import { generateEnding } from '../../api/client'
 
-export default function Dialogue({ item, lang = 'ru', t, onBack }) {
+export default function Dialogue({ item, lang = 'ru', t, onBack, onToggleLang }) {
   const dlg = dialogues[item?.id] || null
   const [nodeId, setNodeId] = useState(dlg?.start || null)
   const node = useMemo(() => (dlg ? dlg.nodes[nodeId] : null), [dlg, nodeId])
@@ -87,7 +87,18 @@ export default function Dialogue({ item, lang = 'ru', t, onBack }) {
         <div className="dialog__box">
           {nodeId !== 'end' && (
             <div className="dialog__line">
-              <span className="dialog__speaker">{node?.speaker?.[lang] || item.title?.[lang] || ''}:</span>
+              <div className="dialog__header">
+                <span className="dialog__speaker">{node?.speaker?.[lang] || item.title?.[lang] || ''}:</span>
+                <button
+                  className="lang-toggle"
+                  type="button"
+                  onClick={onToggleLang}
+                  aria-label={lang === 'ru' ? 'Сменить язык на татарский' : 'Рус теленә күчү'}
+                  title={lang === 'ru' ? 'Сменить язык на татарский' : 'Рус теленә күчү'}
+                >
+                  <img className="lang-flag" src={lang === 'ru' ? '/russia.png' : '/tatarstan.png'} alt="" aria-hidden="true" />
+                </button>
+              </div>
               <span className="dialog__text"> {node?.text?.[lang] || ''}</span>
             </div>
           )}
@@ -108,9 +119,20 @@ export default function Dialogue({ item, lang = 'ru', t, onBack }) {
                   <div style={{ color: '#b00020', margin: '8px 0' }}>{endingError}</div>
                 )}
                 {ending && (
-                  <div style={{ display: 'grid', gap: 8, margin: '8px 0' }}>
+                  <div className="dialog__full" style={{ display: 'grid', gap: 8, margin: '8px 0' }}>
                     <div className="dialog__line">
-                      <span className="dialog__speaker">{item.title?.[lang] || ''}:</span>
+                      <div className="dialog__header">
+                        <span className="dialog__speaker">{item.title?.[lang] || ''}:</span>
+                        <button
+                          className="lang-toggle"
+                          type="button"
+                          onClick={onToggleLang}
+                          aria-label={lang === 'ru' ? 'Сменить язык на татарский' : 'Рус теленә күчү'}
+                          title={lang === 'ru' ? 'Сменить язык на татарский' : 'Рус теленә күчү'}
+                        >
+                          <img className="lang-flag" src={lang === 'ru' ? '/russia.png' : '/tatarstan.png'} alt="" aria-hidden="true" />
+                        </button>
+                      </div>
                       <span className="dialog__text"> {ending?.[`npc_phrase_${lang}`] || ''}</span>
                     </div>
                     <div className="dialog__ending-text" style={{ whiteSpace: 'pre-wrap' }}>
