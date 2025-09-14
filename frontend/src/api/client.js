@@ -45,4 +45,31 @@ export async function createStoryAndDialogue({
   return res.json()
 }
 
+export async function generateEnding({
+  style = null,
+  persona = '',
+  start_ru = '',
+  start_tt = '',
+  visited_summary_ru = [''],
+  visited_summary_tt = [''],
+} = {}) {
+  const payload = {
+    style,
+    persona,
+    start_ru,
+    start_tt,
+    visited_summary_ru,
+    visited_summary_tt,
+  }
+  const res = await fetch(`${API_BASE}/stories/generate/ending`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+    body: JSON.stringify(payload),
+    credentials: 'omit',
+    mode: 'cors',
+  })
+  if (!res.ok) throw new Error(`Failed to generate ending: ${res.status}`)
+  return res.json()
+}
+
 export { API_BASE }

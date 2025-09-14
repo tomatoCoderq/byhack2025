@@ -1,11 +1,22 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { dialogues } from '../../data/dialogues'
 import Button from '../Button/Button'
+import { generateEnding } from '../../api/client'
 
 export default function Dialogue({ item, lang = 'ru', t, onBack }) {
   const dlg = dialogues[item?.id] || null
   const [nodeId, setNodeId] = useState(dlg?.start || null)
   const node = useMemo(() => (dlg ? dlg.nodes[nodeId] : null), [dlg, nodeId])
+
+  // Track start phrases and visited NPC phrases
+  const [startRu, setStartRu] = useState('')
+  const [startTt, setStartTt] = useState('')
+  const [visitedRu, setVisitedRu] = useState([])
+  const [visitedTt, setVisitedTt] = useState([])
+  const [ending, setEnding] = useState(null)
+  const [endingLoading, setEndingLoading] = useState(false)
+  const [endingError, setEndingError] = useState('')
+  const endingRequested = useRef(false)
 
   if (!dlg) {
     return (
@@ -17,6 +28,53 @@ export default function Dialogue({ item, lang = 'ru', t, onBack }) {
       </div>
     )
   }
+
+  // Initialize on dialogue load
+  useEffect(() => {
+    if (!dlg) return
+    const s = dlg.start
+    const startNode = dlg.nodes?.[s]
+    setStartRu(startNode?.text?.ru || '')
+    setStartTt(startNode?.text?.tt || '')
+    setVisitedRu([])
+    setVisitedTt([])
+    setEnding(null)
+    setEndingError('')
+    endingRequested.current = false
+  }, [dlg])
+
+  // Collect visited NPC phrases (exclude start and end)
+  useEffect(() => {
+    if (!dlg || !nodeId) return
+    if (nodeId === dlg.start) return
+    if (nodeId === 'end') return
+    const n = dlg.nodes?.[nodeId]
+    if (!n) return
+    const ru = n.text?.ru || ''
+    const tt = n.text?.tt || ''
+    if (ru) setVisitedRu((arr) => [...arr, ru])
+    if (tt) setVisitedTt((arr) => [...arr, tt])
+  }, [dlg, nodeId])
+
+  // Request ending when at end node
+  useEffect(() => {
+    if (!dlg || nodeId !== 'end' || endingRequested.current) return
+    endingRequested.current = true
+    setEndingLoading(true)
+    setEndingError('')
+    const persona = item?.title?.ru || item?.title?.tt || ''
+    generateEnding({
+      style: null,
+      persona,
+      start_ru: startRu,
+      start_tt: startTt,
+      visited_summary_ru: visitedRu.length ? visitedRu : [''],
+      visited_summary_tt: visitedTt.length ? visitedTt : [''],
+    })
+      .then((res) => setEnding(res))
+      .catch((e) => setEndingError(e?.message || 'Failed to generate ending'))
+      .finally(() => setEndingLoading(false))
+  }, [dlg, nodeId, item?.title?.ru, item?.title?.tt, startRu, startTt, visitedRu, visitedTt])
 
   const options = node?.options || []
 
@@ -36,9 +94,30 @@ export default function Dialogue({ item, lang = 'ru', t, onBack }) {
               </Button>
             ))}
             {options.length === 0 && (
-              <div className="dialog__back">
-                <Button onClick={onBack}>{t?.back || 'Назад'}</Button>
-              </div>
+              <>
+                {endingLoading && (
+                  <div style={{ color: '#05624E', margin: '8px 0' }}>
+                    {lang === 'tt' ? 'Тәмамлау тудырыла…' : 'Генерация концовки…'}
+                  </div>
+                )}
+                {endingError && (
+                  <div style={{ color: '#b00020', margin: '8px 0' }}>{endingError}</div>
+                )}
+                {ending && (
+                  <div style={{ display: 'grid', gap: 8, margin: '8px 0' }}>
+                    <div className="dialog__line">
+                      <span className="dialog__speaker">{item.title?.[lang] || ''}:</span>
+                      <span className="dialog__text"> {ending?.[`npc_phrase_${lang}`] || ''}</span>
+                    </div>
+                    <div style={{ whiteSpace: 'pre-wrap' }}>
+                      {ending?.[`final_text_${lang}`] || ''}
+                    </div>
+                  </div>
+                )}
+                <div className="dialog__back">
+                  <Button onClick={onBack}>{t?.back || 'Назад'}</Button>
+                </div>
+              </>
             )}
           </div>
         </div>
@@ -46,3 +125,4 @@ export default function Dialogue({ item, lang = 'ru', t, onBack }) {
     </div>
   )
 }
+
