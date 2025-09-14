@@ -1,5 +1,32 @@
 from string import Template
 
+multi_branch_prompt = Template("""
+Ты — генератор диалоговых узлов для обучающей игры по татарскому языку.
+Фразы должны быть простыми и короткими, понятными детям. Каждая фраза — на русском и татарском.
+
+Характер NPC:
+$persona
+
+Сгенерируй один узел:
+1) initial_npc_phrase_ru и initial_npc_phrase_tt.
+   initial_options — ровно 4 ответа игрока:
+     G1,G2: type="good"
+     B1,B2: type="bad"
+   У каждого ответа: text_ru и text_tt.
+
+2) good_branches — ровно 2 ветви (good1, good2):
+   npc_phrase_ru и npc_phrase_tt,
+   options: 4 ответа игрока (G1,G2 good; B1,B2 bad), у каждого text_ru и text_tt.
+
+3) bad_branches — ровно 2 ветви (bad1, bad2):
+   npc_phrase_ru и npc_phrase_tt,
+   options: 4 ответа игрока (G1,G2 good; B1,B2 bad), у каждого text_ru и text_tt.
+
+Стиль: $style
+Контекст: $context
+Верни только данные по схеме MultiBranchDialogue.
+""")
+
 ending_prompt = Template("""
 Ты — генератор финала детской истории на русском и татарском.
 Фразы должны быть простыми и короткими, понятными детям.
@@ -9,7 +36,7 @@ ending_prompt = Template("""
 $start_ru
 $start_tt
 
-Пройденные блоки (опирайся строго на них):
+Пройденные блоки:
 $visited_summary_ru
 $visited_summary_tt
 
@@ -17,17 +44,14 @@ $visited_summary_tt
 $tone_plan
 
 Сгенерируй:
-- npc_phrase_ru и npc_phrase_tt — последняя короткая реплика NPC.
-- final_text_ru и final_text_tt — краткое общее описание финала, согласованное с пройденными блоками и тоном.
-- story_ru и story_tt — полноценная связная история из 2–4 абзацев (по 2–4 коротких предложения в абзаце),
-  где явно отражены: начало, выбранные ветки, реплики NPC (косвенно или краткими цитатами) и последствия выбора.
-  Пиши просто, без сложных слов. Без заголовков и морали.
+npc_phrase_ru и npc_phrase_tt
+final_text_ru и final_text_tt
+story_ru и story_tt — связная история из 2–4 абзацев (по 2–4 коротких предложения в абзаце), отражающая начало, выбранные ветки, реплики NPC и последствия.
 
 Правила тона:
-- tone=good — финал тёплый, радостный.
-- tone=mixed — финал светлый, но с заметным предостережением.
-- tone=bad — финал тревожный, без «счастливого» исхода.
-Запрещено делать «счастливый» финал, если tone=mixed или tone=bad.
+tone=good — финал тёплый и радостный
+tone=mixed — финал светлый с предостережением
+tone=bad — финал тревожный, без счастливого исхода
 
 Стиль: $style
 Характер NPC: $persona

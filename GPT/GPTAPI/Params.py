@@ -28,7 +28,7 @@ class StoryEnding:
     start_tt: str = ""
     visited_summary_ru: str = ""
     visited_summary_tt: str = ""
-    tone_plan: str = "mixed"  # "good" | "mixed" | "bad"
+    tone_plan: str = "mixed"
     async def comb(self, context: str = ""):
         return {
             "role": "system",
