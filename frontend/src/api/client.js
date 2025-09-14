@@ -20,5 +20,29 @@ export async function fetchItems() {
   }))
 }
 
-export { API_BASE }
+export async function createStoryAndDialogue({
+  userId,
+  personaName,
+  context = '',
+  style = null,
+  persona = null,
+} = {}) {
+  const payload = {
+    user_id: userId,
+    persona_name: personaName ?? null,
+    context,
+    style,
+    persona,
+  }
+  const res = await fetch(`${API_BASE}/stories`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+    body: JSON.stringify(payload),
+    credentials: 'omit',
+    mode: 'cors',
+  })
+  if (!res.ok) throw new Error(`Failed to create story: ${res.status}`)
+  return res.json()
+}
 
+export { API_BASE }
